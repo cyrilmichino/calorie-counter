@@ -30,7 +30,37 @@
         </button>
         <div id="menu-overlay" class="overlay" onclick="closeMenu()"></div>
     </header>
-    <main></main>
+    <main>
+        <div class="wrapper">
+            <div id="banner" class="flex flex-direction-column space-evenly-small centered">
+                <h1>My Daily Calories</h1>
+                <p>Your food and nutrition buddy. Track your <b>meals</b> and <b>calories consumed</b> in a given day.</p>
+            </div>
+        </div>
+        <!-- Section with summary numbers: balance, income, expenses -->
+        <div id="dashboard" class="wrapper grid four-column">
+            <div class="card flex flex-direction-column space-evenly-small">
+                <h2 class="text-small text-accent">Calories</h2>
+                <p class="text-dark"><span class="text-large" id="total-calories">0</span> <b>calories</b> </p>
+                <p class="text-light text-smallest">Total calories consumed today</p>
+            </div>
+            <div class="card flex flex-direction-column space-evenly-small">
+                <h2 class="text-small text-accent">Meals</h2>
+                <p class="text-dark"><span class="text-large" id="total-meals">0</span> <b>meals</b></p>
+                <p class="text-light text-smallest">How many meals have you had today</p>
+            </div>
+            <div class="card flex flex-direction-column space-evenly-small span-2-cols">
+                <h2 class="text-small text-accent">Expenses</h2>
+                <p class="text-dark"><b>KES</b> <span class="text-large" id="total-expenses">0</span></p>
+                <p class="text-light text-smallest">How much you have spent</p>
+            </div>
+            <div class="card flex flex-direction-column space-evenly-small">
+                <h2 class="text-small text-accent">Savings</h2>
+                <p class="text-dark"><b>KES</b> <span class="text-large" id="total-savings">0</span></p>
+                <p class="text-light text-smallest">Total balance in your savings</p>
+            </div>
+        </div>
+    </main>
     <footer></footer>
 </body>
 </html>
