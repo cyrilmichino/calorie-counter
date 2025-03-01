@@ -1,0 +1,402 @@
+:root {
+    --clr-primary: #3366cc;
+    --clr-transparent: hsla(100%, 100%, 100%, 0);
+    --clr-neutral-100: #ffffff;
+    --clr-neutral-200: #f6f6f6;
+    --clr-neutral-300: #e2eef3;
+    --clr-neutral-400: #d3d3d3;
+    --clr-neutral-500: #7c7c7c;
+    --clr-neutral-600: #3a3a3a;
+    --clr-neutral-700: #011638;
+
+    --fs-300: 0.9375rem;
+    --fs-400: 1rem;
+    --fs-500: 1.125rem;
+    --fs-600: 1.25rem;
+    --fs-700: 1.5rem;
+    --fs-800: 1.75rem;
+    --fs-900: 2.25rem;
+
+    --fw-light: 300;
+    --fw-regular: 400;
+    --fw-medium: 500;
+    --fw-semi-bold: 600;
+    --fw-bold: 700;
+
+    --ff-body: "Roboto", sans-serif;
+    --ff-heading: "Roboto", sans-serif;
+}
+@media (min-width: 50em) {
+    :root {
+      --fs-300: 1rem;
+      --fs-400: 1.1rem;
+      --ff-500: 1.25rem;
+      --fs-600: 1.4rem;
+      --fs-700: 1.65rem;
+      --fs-800: 2rem;
+      --fs-900: 2.5rem;
+    }
+  }
+
+/** CSS Reset and Base Theme **/
+
+/* Use a more-intuitive box-sizing model */
+*, *::before, *::after {
+    box-sizing: border-box;
+  }
+* {
+    margin: 0;
+    padding: 0;
+}
+body {
+    min-height: 100vh;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased; /* Improve text rendering */
+}
+img, picture, video, canvas, svg {
+    display: block;
+    max-width: 100%;
+    border-radius: 10px;
+}
+/* Avoid text overflows */
+p, h1, h2, h3, h4, h5, h6 {
+    overflow-wrap: break-word;
+    hyphens: auto;
+}
+h1, h2, h3, h4, h5, h6 {
+    color: var(--clr-neutral-700);
+    font-family: var(--ff-heading);
+    font-weight: var(--fw-medium);
+    text-wrap: balance;
+}
+h1 {
+    font-size: var(--fs-900);
+    font-weight: var(--fw-bold);
+}
+h2 {
+    font-size: var(--fs-800);
+    font-weight: var(--fw-bold);
+}
+h3 {
+    font-size: var(--fs-700);
+    font-weight: var(--fw-bold);
+}
+h4 {
+    font-size: var(--fs-600);
+}
+h5 {
+    font-size: var(--fs-500);
+}
+h6 {
+    font-size: var(--fs-400);
+}
+p {
+    font-family: var(--ff-body);
+    font-size: var(--fs-400);
+    font-weight: var(--fw-regular);
+    color: var(--clr-neutral-600);
+    text-wrap: pretty;
+}
+/* Inherit fonts for form controls */
+a, button, label, input, select, textarea, table {
+    font: inherit;
+    font-size: var(--fs-400);
+}
+a {
+    color: var(--clr-primary);
+    text-decoration: none;
+}
+a:hover {
+    color: var(--clr-neutral-700);
+}
+button {
+    background-color: var(--clr-primary);
+    border: 2px solid var(--clr-primary);
+    color: var(--clr-neutral-100);
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-inline: 2rem;
+    padding-block: 0.1rem;
+}
+button:hover {
+    background-color: var(--clr-neutral-700);
+    border-color: var(--clr-neutral-700);
+}
+label {
+    color: var(--clr-neutral-700);
+    font-weight: var(--fw-medium);
+}
+input, select, textarea {
+    border: 1px solid var(--clr-neutral-400);
+    color: var(--clr-neutral-600);
+    padding-inline: 0.2rem;
+    min-height: 2rem;
+    border-radius: 5px;
+}
+table {
+    min-width: 100%;
+    border-collapse: collapse;
+    border-radius: 10px;
+}
+th, td {
+    padding-inline: 0.5rem;
+    padding-block: 0.1rem;
+    text-align: left;
+}
+  @media (min-width: 40em) {
+    th, td {
+        padding-inline: 1rem;
+    }
+  }
+  @media (min-width: 50em) {
+    th, td {
+        padding-inline: 2rem;
+    }
+  }
+tr:nth-child(odd) {
+    background-color: var(--clr-neutral-300);
+}
+tr:nth-child(1) {
+    background-color: var(--clr-neutral-700);
+    border: 1px solid var(--clr-neutral-700);
+    color: var(--clr-neutral-100);
+}
+
+/** Utility Classes **/
+
+/* Button Variations */
+.btn-outline {
+    background-color: var(--clr-transparent);
+    color: var(--clr-primary);
+}
+.btn-outline:hover {
+    color: var(--clr-neutral-100);
+}
+.btn-no-outline {
+    background-color: var(--clr-transparent);
+    color: var(--clr-neutral-600);
+    border: 0;
+    padding: 0.2rem;
+}
+.btn-no-outline:hover {
+    background-color: var(--clr-transparent);
+    color: var(--clr-primary);
+}
+.btn-danger {
+    background-color: var(--clr-transparent);
+    border: 2px solid crimson;
+    color: crimson;
+}
+.btn-danger:hover {
+    background-color: crimson;
+    border-color: crimson;
+    color: var(--clr-neutral-100);
+}
+
+/* Container wrapper for all page sections */
+.wrapper {
+    display: block;
+    padding-inline: 1rem;
+    padding-block: 1rem;
+    max-width: min(100%,90em);
+    margin: auto;
+  }
+  @media (min-width: 50em) {
+    .wrapper {
+      padding-inline: 2rem;
+    }
+  }
+  @media (min-width: 70em) {
+    .wrapper {
+      padding-inline: 5rem;
+    }
+  }
+/* Rounded border radius for div */
+.rounded-10 {
+    border-radius: 10px;
+    overflow: hidden;
+}
+.allow-overflow {
+    overflow-x:auto;
+    overflow-y: auto;
+}
+/* Full width div*/
+.full-width {
+    width: 100%;
+}
+/* Text utility classes */
+.text-largest {
+    font-size: var(--fs-900);
+    font-weight: var(--fw-bold);
+}
+.text-large {
+    font-size: var(--fs-800);
+    font-weight: var(--fw-semi-bold);
+}
+.text-small {
+    font-size: var(--fs-500);
+    font-weight: var(--fw-medium);
+}
+.text-smallest {
+    font-size: var(--fs-300);
+    font-weight: var(--fw-regular);
+}
+.text-dark {
+    color: var(--clr-neutral-700);
+}
+.text-accent {
+    color: var(--clr-primary);
+}
+.text-light {
+    color: var(--clr-neutral-500);
+}
+
+/* Header and Responsive Navigation */
+header {
+    position: sticky;
+    top: 0;
+    background-color: var(--clr-neutral-100);
+    border-bottom: 1px solid var(--clr-neutral-400);
+    padding-block: 1rem;
+    padding-inline: 1rem;
+}
+header a {
+    color: var(--clr-neutral-600);
+}
+header a:hover {
+    color: var(--clr-primary);
+}
+
+@media (max-width: 50em) {
+    #main-nav {
+        position: fixed;
+        background-color: var(--clr-neutral-100);
+        border-left: 1px solid var(--clr-neutral-400);
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
+        top: 0;
+        right: 100vh;
+        padding: 2rem;
+        min-width: min(100%, 300px);
+        min-height: 100vh;
+        z-index: 100;
+    }
+}
+#logo-title {
+    color: var(--clr-neutral-700);
+    font-weight: var(--fw-semi-bold);
+    font-size: var(--fs-600);
+}
+
+/* CSS Grid and Flexbox Responsivity */
+
+/* Flex Elements */
+.flex {
+    display: flex;
+    gap: 1rem;
+    flex-direction: row;
+}
+.flex-direction-column {
+    flex-direction: column;
+}
+.space-between {
+    justify-content: space-between;
+}
+.space-evenly-small {
+    gap: 0.1rem;
+}
+.centered {
+    justify-content: center;
+    text-align: center;
+}
+@media (min-width: 50em) {
+    .flex-direction-row {
+        flex-direction: row;
+    }
+}
+/* Grid Elements */
+.grid {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: 1fr;
+}
+  @media (min-width: 35em) {
+    .four-column {
+        grid-template-columns: 1fr 1fr;
+    }
+  }
+  @media (min-width: 50em) {
+    .four-column {
+        grid-template-columns: 1fr 1fr 1fr 1fr;
+    }
+  }
+
+/* Hide Elements */
+.hide {
+    display: none;
+}
+  @media (max-width: 50em) {
+    .hide-mobile {
+        display: none;
+    }
+  }
+  @media (min-width: 50em) {
+    .hide-desktop {
+        display: none;
+    }
+  }
+
+/** Project Components **/
+
+/* Bordered cards for grids */
+.card {
+    border: 1px solid var(--clr-neutral-400);
+    border-radius: 10px;
+    padding: 1rem;
+}
+/* Pop-up modal */
+#modal {
+    background-color: var(--clr-neutral-100);
+    max-width: 40em;
+    position: fixed;
+    margin: auto;
+    top: 150;
+    right: 0;
+    left: 0;
+    display: none;
+    z-index: 60;
+}
+/* Overlays that close pop-ups on click */
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    min-width: 100%;
+    min-height: 100%;
+    display: none;
+}
+#menu-overlay {
+    z-index: 90;
+}
+#modal-overlay {
+    z-index: 50;
+}
+
+/* Banner card with image background */
+#banner {
+    border-radius: 20px;
+    /* background-image: url("assets/coinjar.webp"); */
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-color: var(--clr-neutral-700);
+    padding-block: 2rem;
+    margin-top: 1rem;
+    min-height: 200px;
+}
+#banner h1, p {
+    color: var(--clr-neutral-100);
+}
