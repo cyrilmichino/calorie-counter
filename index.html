@@ -47,17 +47,75 @@
             <div class="card flex flex-direction-column space-evenly-small">
                 <h2 class="text-small text-accent">Meals</h2>
                 <p class="text-dark"><span class="text-large" id="total-meals">0</span> <b>meals</b></p>
-                <p class="text-light text-smallest">How many meals have you had today</p>
+                <p class="text-light text-smallest">Total meals consumed today</p>
             </div>
             <div class="card flex flex-direction-column space-evenly-small span-2-cols">
-                <h2 class="text-small text-accent">Expenses</h2>
-                <p class="text-dark"><b>KES</b> <span class="text-large" id="total-expenses">0</span></p>
-                <p class="text-light text-smallest">How much you have spent</p>
+                <h2 class="text-small text-accent">Minimum Bound</h2>
+                <p class="text-dark"><span class="text-large" id="total-expenses">2,500</span> <b>calories</b></p>
+                <p class="text-light text-smallest">Minimum calories to consume today</p>
             </div>
             <div class="card flex flex-direction-column space-evenly-small">
-                <h2 class="text-small text-accent">Savings</h2>
-                <p class="text-dark"><b>KES</b> <span class="text-large" id="total-savings">0</span></p>
-                <p class="text-light text-smallest">Total balance in your savings</p>
+                <h2 class="text-small text-accent">Maximum Bound</h2>
+                <p class="text-dark"><span class="text-large" id="total-savings">3,000</span> <b>calories</b></p>
+                <p class="text-light text-smallest">Maximum calories to consume today</p>
+            </div>
+        </div>
+        <div class="wrapper">
+            <div class="grid two-column">
+                <div class="flex flex-direction-column">
+                    <div class="card rounded-10 flex flex-direction-column" id="add-meal">
+                        <h3>Add New Meal</h3>
+                        <form action="submit" method="post" class="flex flex-direction-column">
+                            <label for="description" class="full-width">
+                                What did you eat?<br>
+                                <textarea name="description" class="full-width" id="description" placeholder="1/4kg of goat meat and cornmeal (ugali)"></textarea>
+                            </label>
+                            <button type="button" class="full-width" onclick="addMeal()">Add Meal</button>
+                        </form>
+                    </div>
+                    <div class="card rounded-10 flex flex-direction-column" id="add-meal">
+                        <h3>My Daily Targets</h3>
+                        <form action="submit" method="post" class="flex flex-direction-column">
+                            <label for="min-calories" class="full-width">
+                                Minimum Calories<br>
+                                <input type="number" name="min-calories" id="min-calories" class="full-width" value="2500">
+                            </label>
+                            <label for="max-calories" class="full-width">
+                                Maximum Calories<br>
+                                <input type="number" name="min-calories" id="max-calories" class="full-width" value="3000">
+                            </label>
+                            <button type="button" class="full-width" onclick="saveTargets()">Save Changes</button>
+                        </form>
+                    </div>
+                </div>
+                <div class="flex flex-direction-column">
+                    <table id="daily-meals">
+                        <tr>
+                            <th></th>
+                            <th>Meal Description</th>
+                            <th>Total Calories</th>
+                            <th>Action</th>
+                        </tr>
+                        <tr>
+                            <td>No meal consumed today. Add new meal to track your calories!</td>
+                        </tr>
+                    </table>
+                    <table id="daily-meal-details">
+                        <tr>
+                            <th>Meal</th>
+                            <th>Item</th>
+                            <th>Quantity</th>
+                            <th>Calories</th>
+                            <th>Protein</th>
+                            <th>Carbs</th>
+                            <th>Fat</th>
+                            <th>Sugar</th>
+                        </tr>
+                        <tr>
+                            <td>No meal consumed today. Add a new meal!</td>
+                        </tr>
+                    </table>
+                </div>
             </div>
         </div>
     </main>
