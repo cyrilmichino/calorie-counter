@@ -54,14 +54,9 @@
                 <p class="text-dark"><span class="text-large" id="total-expenses">2,500</span> <b>calories</b></p>
                 <p class="text-light text-smallest">Minimum calories to consume today</p>
             </div>
-            <div class="card flex flex-direction-column space-evenly-small">
-                <h2 class="text-small text-accent">Maximum Bound</h2>
-                <p class="text-dark"><span class="text-large" id="total-savings">3,000</span> <b>calories</b></p>
-                <p class="text-light text-smallest">Maximum calories to consume today</p>
-            </div>
         </div>
         <div class="wrapper">
-            <div class="grid two-column">
+            <div class="grid three-column">
                 <div class="flex flex-direction-column">
                     <div class="card rounded-10 flex flex-direction-column" id="add-meal">
                         <h3>Add New Meal</h3>
@@ -88,33 +83,29 @@
                         </form>
                     </div>
                 </div>
-                <div class="flex flex-direction-column">
-                    <table id="daily-meals">
-                        <tr>
-                            <th></th>
-                            <th>Meal Description</th>
-                            <th>Total Calories</th>
-                            <th>Action</th>
-                        </tr>
-                        <tr>
-                            <td>No meal consumed today. Add new meal to track your calories!</td>
+                <div class="span-2-cols flex flex-direction-column allow-overflow">
+                    <table id="daily-meals" class="full-width">
+                        <tr class="full-width">
+                            <th scope="col"></th>
+                            <th scope="col">Meal Description</th>
+                            <th scope="col">Total Calories</th>
+                            <th scope="col">Action</th>
                         </tr>
                     </table>
-                    <table id="daily-meal-details">
-                        <tr>
-                            <th>Meal</th>
-                            <th>Item</th>
-                            <th>Quantity</th>
-                            <th>Calories</th>
-                            <th>Protein</th>
-                            <th>Carbs</th>
-                            <th>Fat</th>
-                            <th>Sugar</th>
-                        </tr>
-                        <tr>
-                            <td>No meal consumed today. Add a new meal!</td>
+                    <table id="daily-meal-details" class="full-width">
+                        <tr class="full-width">
+                            <th scope="col">Meal</th>
+                            <th scope="col">Item</th>
+                            <th scope="col">Quantity</th>
+                            <th scope="col">Calories</th>
+                            <th scope="col">Protein</th>
+                            <th scope="col">Carbs</th>
+                            <th scope="col">Carbs</th>
+                            <th scope="col">Fat</th>
+                            <th scope="col">Sugar</th>
                         </tr>
                     </table>
+                    <p>No meal consumed today</p>
                 </div>
             </div>
         </div>
