@@ -14,11 +14,32 @@ function closeMenu() {
 }
 
 async function getCalorieData(query) {
-    let myMeals = await fetch('https://api.api-ninjas.com/v1/nutrition?query=' + query,{headers: {'X-Api-Key': '+hD6HZuQLtjhEQIit+pGdg==AFFCjQr3XavEwrfQ'}})
-                            .then(response => response.json())
-                            .then(data => console.log(data))
-                            .catch(error => console.error('Error:', error));
-
+    const url = "https://api.api-ninjas.com/v1/nutrition?query=" + query;
+    try {
+        const response = await fetch(url, {headers: {'X-Api-Key': '+hD6HZuQLtjhEQIit+pGdg==AFFCjQr3XavEwrfQ'}});
+        if (!response.ok) {
+            throw new Error(`Response status: ${response.status}`);
+        }
+        const data = await response.json();
+        let arr = []
+        for (i=0; i<data.length; i++) {
+            arr.push({ meal: query,
+                name: data[i].name,
+                carbohydrates_total_g: data[i].carbohydrates_total_g,
+                cholesterol_mg: data[i].cholesterol_mg,
+                fat_total_g: data[i].fat_total_g,
+                fiber_g: data[i].fiber_g,
+                potassium_mg: data[i].potassium_mg,
+                protein_g: 0,
+                sodium_mg: data[i].sodium_mg,
+                sugar_g: data[i].sugar_g,
+                calories: 0
+            })
+        }
+        return arr
+    } catch (error) {
+        console.error(error.message);
+    }
 }
 
 function addMeal() {
@@ -35,5 +56,3 @@ function addMeal() {
     meal.value = ""
     console.log(JSON.parse(localStorage.getItem('calorie-app-meals')))
 }
-
-getCalorieData("cornmeal and 1/2kg beef")
