@@ -13,6 +13,13 @@ function closeMenu() {
     navbar.style.right = '100vh';
 }
 
+async function getCalorieData(query) {
+    let myMeals = await fetch('https://api.calorieninjas.com/v1/nutrition?query=' + query, {'X-Api-Key': 'YOUR_API_KEY'})
+                            .then(response => response.json())
+                            .then(data => console.log(data))
+                            .catch(error => console.error('Error:', error));
+}
+
 function addMeal() {
     const meal = document.getElementById('description')
     let meals = JSON.parse(localStorage.getItem('calorie-app-meals'))
@@ -28,7 +35,4 @@ function addMeal() {
     console.log(JSON.parse(localStorage.getItem('calorie-app-meals')))
 }
 
-// meals = ["1/2kg goat meat and cornmeal", "4 slices of bread and tea with milk"]
-// localStorage.setItem('calorie-app-meals', JSON.stringify(meals))
-
-// console.log(JSON.parse(localStorage.getItem('calorie-app-meals')))
+getCalorieData("1/2kg beef")
