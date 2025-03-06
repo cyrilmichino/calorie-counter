@@ -13,6 +13,17 @@ function closeMenu() {
     navbar.style.right = '100vh';
 }
 
+function estimateProtein(potassium_mg) {
+    // We don't have protein data from API, therefore we estimate it from available data
+    // Protein grams seem to be approximately 0.1 of potassium miligrams numerous times
+    return 0.1 * potassium_mg
+}
+function estimateCalories(protein_g, carbohydrates_total_g, fat_total_g, sugar_g) {
+    // We don't have calorie data from API, therefore, we estimate it from available data
+    // As per nutritional info, 1 gram of protein,  carbohydrates, and sugar each contain 4 calories, while 1 gram of fat contains 9 calories
+    return 4 * (protein_g + carbohydrates_total_g + sugar_g) + 9 * fat_total_g
+}
+
 async function getCalorieData(query) {
     const url = "https://api.api-ninjas.com/v1/nutrition?query=" + query;
     try {
@@ -30,10 +41,10 @@ async function getCalorieData(query) {
                 fat_total_g: data[i].fat_total_g,
                 fiber_g: data[i].fiber_g,
                 potassium_mg: data[i].potassium_mg,
-                protein_g: 0,
+                protein_g: estimateProtein(data[i].potassium_mg),
                 sodium_mg: data[i].sodium_mg,
                 sugar_g: data[i].sugar_g,
-                calories: 0
+                calories: estimateCalories(data[i].protein_g, data[i].carbohydrates_total_g, data[i].fat_total_g, data[i].sugar_g)
             })
         }
         return arr
