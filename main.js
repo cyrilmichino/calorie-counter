@@ -14,10 +14,11 @@ function closeMenu() {
 }
 
 async function getCalorieData(query) {
-    let myMeals = await fetch('https://api.calorieninjas.com/v1/nutrition?query=' + query, {'X-Api-Key': 'YOUR_API_KEY'})
+    let myMeals = await fetch('https://api.api-ninjas.com/v1/nutrition?query=' + query,{headers: {'X-Api-Key': '+hD6HZuQLtjhEQIit+pGdg==AFFCjQr3XavEwrfQ'}})
                             .then(response => response.json())
                             .then(data => console.log(data))
                             .catch(error => console.error('Error:', error));
+
 }
 
 function addMeal() {
@@ -35,4 +36,4 @@ function addMeal() {
     console.log(JSON.parse(localStorage.getItem('calorie-app-meals')))
 }
 
-getCalorieData("1/2kg beef")
+getCalorieData("cornmeal and 1/2kg beef")
