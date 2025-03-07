@@ -67,3 +67,25 @@ function addMeal() {
     meal.value = ""
     console.log(JSON.parse(localStorage.getItem('calorie-app-meals')))
 }
+
+function displayTable(arr) {
+    const mealTable = document.getElementById('daily-meals');
+    let mealData = `<tr class="full-width">
+                            <th scope="col"></th>
+                            <th scope="col">Meal Description</th>
+                            <th scope="col">Total Calories</th>
+                            <th scope="col">Action</th>
+                        </tr>`
+    for (i=0; i < arr.length; i++) {
+        mealData += `<tr>
+            <td>${i+1}</td>
+            <td>$${arr[i]}</td>
+            <td>3000</td>
+            <td><button class="btn-danger">Delete</button></td>
+        </tr>`
+    }
+
+    mealTable.innerHTML = mealData
+}
+
+displayTable(["1/2 kg beef", "3 queencakes"])
