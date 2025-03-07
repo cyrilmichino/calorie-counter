@@ -68,7 +68,7 @@ function addMeal() {
     console.log(JSON.parse(localStorage.getItem('calorie-app-meals')))
 }
 
-function displayTable(arr) {
+function displayMealTable(arr) {
     const mealTable = document.getElementById('daily-meals');
     let mealData = `<tr class="full-width">
                             <th scope="col"></th>
@@ -88,4 +88,42 @@ function displayTable(arr) {
     mealTable.innerHTML = mealData
 }
 
-displayTable(["1/2 kg beef", "3 queencakes"])
+function displayNutrientsTable() {
+    const nutritionTable = document.getElementById('daily-nutrition');
+    data = JSON.parse(localStorage.getItem('calorie-app-meals'))  //change to nutrients table
+
+    let nutritionData = `<tr class="full-width">
+                            <th scope="col">Item</th>
+                            <th scope="col">Calories</th>
+                            <th scope="col">Carbs</th>
+                            <th scope="col">Protein</th>
+                            <th scope="col">Fat</th>
+                            <th scope="col">Cholestrol</th>
+                            <th scope="col">Sugar</th>
+                            <th scope="col">Fibre</th>
+                            <th scope="col">Potassium</th>
+                            <th scope="col">Sodium</th>
+                        </tr>`
+    
+    for (i=0; i < data.length; i++) {
+        nutritionData += `<tr>
+            <td>${data[i].name}</td>
+            <td>${data[i].calories}</td>
+            <td>${data[i].carbohydrates_total_g}</td>
+            <td>${data[i].protein_g}</td>
+            <td>${data[i].fat_total_g}</td>
+            <td>${data[i].cholesterol_mg}</td>
+            <td>${data[i].sugar_g}</td>
+            <td>${data[i].fiber_g}</td>
+            <td>${data[i].potassium_mg}</td>
+            <td>${data[i].sodium_mg}</td>
+        </tr>`
+    }
+
+    nutritionTable.innerHTML = nutritionData
+}
+
+
+console.log(JSON.parse(localStorage.getItem('calorie-app-meals')))
+displayMealTable(["1/2 kg beef", "3 queencakes"])
+displayNutrientsTable()
