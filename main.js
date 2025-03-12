@@ -14,38 +14,6 @@ function closeMenu() {
 }
 
 /** Fetching nutrients data from Calorie Ninja API **/
-async function getCalorieData(queryText) {
-    // Query API Ninjas API to get individual food items from query text
-    // Returns an array with nutrients data for every food item on query text
-    const url = "https://api.api-ninjas.com/v1/nutrition?query=" + queryText; // API Call
-    try {
-        const response = await fetch(url, {headers: {'X-Api-Key': '+hD6HZuQLtjhEQIit+pGdg==AFFCjQr3XavEwrfQ'}});
-        if (!response.ok) {
-            throw new Error(`Response status: ${response.status}`);
-        }
-        const data = await response.json();
-        let foodItems = [] // Array of all individual foof items consumed (from query text) and their nutrients
-        for (i=0; i<data.length; i++) {
-            foodItems.push({ meal: queryText,
-                name: data[i].name,
-                carbohydrates_total_g: data[i].carbohydrates_total_g,
-                cholesterol_mg: data[i].cholesterol_mg,
-                fat_total_g: data[i].fat_total_g,
-                fiber_g: data[i].fiber_g,
-                potassium_mg: data[i].potassium_mg,
-                protein_g: estimateProtein(data[i].potassium_mg),
-                sodium_mg: data[i].sodium_mg,
-                sugar_g: data[i].sugar_g,
-                calories: estimateCalories(data[i].protein_g, data[i].carbohydrates_total_g, data[i].fat_total_g, data[i].sugar_g)
-            })
-        }
-        addFoodItems(foodItems)
-        console.log('Success')
-    } catch (error) {
-        console.error(error.message);
-    }
-}
-
 function estimateProtein(potassium_mg) {
     // No protein data available from API, therefore we estimate it from available data
     // Protein grams seem to be approximately 0.1 of potassium miligrams numerous times
@@ -57,21 +25,53 @@ function estimateCalories(protein_g, carbohydrates_total_g, fat_total_g, sugar_g
     // No calorie data from API, therefore, we estimate it from available data
     // As per nutritional info, 1 gram of protein,  carbohydrates, and sugar each contain 4 calories, while 1 gram of fat contains 9 calories
     // This is a good estimate, but most accurate data can be gotten from premium version of the API
-    return 4 * (protein_g + carbohydrates_total_g + sugar_g) + 9 * fat_total_g
+    return (4 * (protein_g + carbohydrates_total_g + sugar_g)) + (9 * fat_total_g)
+}
+
+async function getNutritionData(queryText) {
+    // Query API Ninjas API to get individual food items from query text
+    // Returns an array with nutrients data for every food item on query text
+    const url = "https://api.api-ninjas.com/v1/nutrition?query=" + queryText; // API Call
+    try {
+        const response = await fetch(url, {headers: {'X-Api-Key': '+hD6HZuQLtjhEQIit+pGdg==AFFCjQr3XavEwrfQ'}});
+        if (!response.ok) {
+            throw new Error(`Response status: ${response.status}`);
+        }
+        const data = await response.json();
+        var foodItems = []; // Array of all individual foof items consumed (from query text) and their nutrients
+        for (i=0; i<data.length; i++) {
+            foodItems.push({ meal: queryText,
+                name: data[i].name,
+                carbohydrates_total_g: data[i].carbohydrates_total_g,
+                cholesterol_mg: data[i].cholesterol_mg,
+                fat_total_g: data[i].fat_total_g,
+                fiber_g: data[i].fiber_g,
+                potassium_mg: data[i].potassium_mg,
+                sodium_mg: data[i].sodium_mg,
+                sugar_g: data[i].sugar_g,
+                protein_g: estimateProtein(data[i].potassium_mg),
+                calories: estimateCalories(data[i].protein_g, data[i].carbohydrates_total_g, data[i].fat_total_g, data[i].sugar_g)
+            });
+        }
+        addFoodItems(foodItems);
+        console.log('Success');
+    } catch (error) {
+        console.error(error.message);
+    }
 }
 
 function addFoodItems(foodItems) {
     // Adds array of food items with their nutrient data to local storage
-    let consumption = JSON.parse(localStorage.getItem('calorie-app-consumption')) // Get from local storage
+    let consumption = JSON.parse(localStorage.getItem('calorie-app-consumption'));
 
-    // Add meal entered into local storage
-    if (consumption == null || consumption.length == 0)  {
-        localStorage.setItem('calorie-app-consumption', JSON.stringify(foodItems))
+    // Add all food items into local storage
+    if (consumption == null || consumption.length == 0 || consumption.length == undefined)  {
+        localStorage.setItem('calorie-app-consumption', JSON.stringify([foodItems]));
     } else {
         for (i=0; i < foodItems.length; i++) {
-            consumption.push(foodItems[i])
+            consumption.push(foodItems[i]);
         }
-        localStorage.setItem('calorie-app-consumption', JSON.stringify(consumption))
+        localStorage.setItem('calorie-app-consumption', JSON.stringify(consumption));
     }
 }
 
@@ -79,14 +79,17 @@ function addMeal() {
     // Get meal from form entry and add data to local storage
     const meal = document.getElementById('description')
     let meals = JSON.parse(localStorage.getItem('calorie-app-meals'))
-
+    
     // Add meal entered into local storage
-    if (meals == null || meals.length == 0)  {
+    if (meals == null || meals.length == 0 || meals.length == undefined)  {
         localStorage.setItem('calorie-app-meals', JSON.stringify([meal]))
     } else {
         meals.push(meal.value)
         localStorage.setItem('calorie-app-meals', JSON.stringify(meals))
     }
+
+    // Get nutrition data and add to local storage
+    getNutritionData(meal.value)
 
     meal.value = ""
     console.log(JSON.parse(localStorage.getItem('calorie-app-meals')))
@@ -112,9 +115,9 @@ function displayMealTable(arr) {
     mealTable.innerHTML = mealData
 }
 
-function displayNutrientsTable() {
+function displayNutritionTable() {
     const nutritionTable = document.getElementById('daily-nutrition');
-    data = JSON.parse(localStorage.getItem('calorie-app-meals'))  //change to nutrients table
+    data = JSON.parse(localStorage.getItem('calorie-app-consumption'))  //change to nutrients table
 
     let nutritionData = `<tr class="full-width">
                             <th scope="col">Item</th>
@@ -148,10 +151,5 @@ function displayNutrientsTable() {
 }
 
 
-console.log(JSON.parse(localStorage.getItem('calorie-app-meals')))
 displayMealTable(["1/2 kg beef", "3 queencakes"])
-displayNutrientsTable()
-
-// getCalorieData('1/2 kg beef')
-console.log(JSON.parse(localStorage.getItem('calorie-app-consumption')))
-console.log(JSON.parse(localStorage.getItem('calorie-app-meals')))
+displayNutritionTable()
