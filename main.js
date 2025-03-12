@@ -54,6 +54,7 @@ async function getNutritionData(queryText) {
             });
         }
         addFoodItems(foodItems);
+        displayNutritionTable()
         console.log('Success');
     } catch (error) {
         console.error(error.message);
@@ -75,40 +76,42 @@ function addFoodItems(foodItems) {
     }
 }
 
-function addMeal() {
+async function addMeal() {
     // Get meal from form entry and add data to local storage
     const meal = document.getElementById('description')
     let meals = JSON.parse(localStorage.getItem('calorie-app-meals'))
     
+    // Get nutrition data and add to local storage
+    await getNutritionData(meal.value)
+
     // Add meal entered into local storage
     if (meals == null || meals.length == 0 || meals.length == undefined)  {
-        localStorage.setItem('calorie-app-meals', JSON.stringify([meal]))
+        localStorage.setItem('calorie-app-meals', JSON.stringify([{id: 1, description: meal.value, calories: 500}]))
     } else {
-        meals.push(meal.value)
+        meals.push({id: meals[-1].id + 1, description: meal.value, calories: 500}) // use timestamp instead of id
         localStorage.setItem('calorie-app-meals', JSON.stringify(meals))
     }
 
-    // Get nutrition data and add to local storage
-    getNutritionData(meal.value)
-
     meal.value = ""
-    console.log(JSON.parse(localStorage.getItem('calorie-app-meals')))
+    displayMealTable()
 }
 
-function displayMealTable(arr) {
+function displayMealTable() {
     const mealTable = document.getElementById('daily-meals');
+    data = JSON.parse(localStorage.getItem('calorie-app-meals'))
+
     let mealData = `<tr class="full-width">
                             <th scope="col"></th>
                             <th scope="col">Meal Description</th>
                             <th scope="col">Total Calories</th>
                             <th scope="col">Action</th>
                         </tr>`
-    for (i=0; i < arr.length; i++) {
+    for (i=0; i < data.length; i++) {
         mealData += `<tr>
-            <td>${i+1}</td>
-            <td>$${arr[i]}</td>
-            <td>3000</td>
-            <td><button class="btn-danger">Delete</button></td>
+            <td>${data[i].id}</td>
+            <td>${data[i].description}</td>
+            <td>${data[i].calories}</td>
+            <td><button class="btn-danger" onclick="deleteItem(data[i].id)">Delete</button></td>
         </tr>`
     }
 
@@ -151,5 +154,5 @@ function displayNutritionTable() {
 }
 
 
-displayMealTable(["1/2 kg beef", "3 queencakes"])
+displayMealTable()
 displayNutritionTable()
