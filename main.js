@@ -25,10 +25,10 @@ function estimateCalories(protein_g, carbohydrates_total_g, fat_total_g, sugar_g
     // No calorie data from API, therefore, we estimate it from available data
     // As per nutritional info, 1 gram of protein,  carbohydrates, and sugar each contain 4 calories, while 1 gram of fat contains 9 calories
     // This is a good estimate, but most accurate data can be gotten from premium version of the API
-    return (4 * (protein_g + carbohydrates_total_g + sugar_g)) + (9 * fat_total_g)
+    return 4 * (protein_g + carbohydrates_total_g + sugar_g) + 9 * fat_total_g
 }
 
-async function getNutritionData(queryText) {
+async function getNutritionData(queryText, timestamp) {
     // Query API Ninjas API to get individual food items from query text
     // Returns an array with nutrients data for every food item on query text
     const url = "https://api.api-ninjas.com/v1/nutrition?query=" + queryText; // API Call
@@ -40,7 +40,7 @@ async function getNutritionData(queryText) {
         const data = await response.json();
         var foodItems = []; // Array of all individual foof items consumed (from query text) and their nutrients
         for (i=0; i<data.length; i++) {
-            foodItems.push({ meal: queryText,
+            foodItems.push({ meal: timestamp.toLocaleTimeString("en-US"),
                 name: data[i].name,
                 carbohydrates_total_g: data[i].carbohydrates_total_g,
                 cholesterol_mg: data[i].cholesterol_mg,
@@ -50,7 +50,7 @@ async function getNutritionData(queryText) {
                 sodium_mg: data[i].sodium_mg,
                 sugar_g: data[i].sugar_g,
                 protein_g: estimateProtein(data[i].potassium_mg),
-                calories: estimateCalories(data[i].protein_g, data[i].carbohydrates_total_g, data[i].fat_total_g, data[i].sugar_g)
+                calories: estimateCalories(Number(data[i].protein_g), Number(data[i].carbohydrates_total_g), Number(data[i].fat_total_g), Number(data[i].sugar_g))
             });
         }
         addFoodItems(foodItems);
@@ -79,21 +79,24 @@ function addFoodItems(foodItems) {
 async function addMeal() {
     // Get meal from form entry and add data to local storage
     const meal = document.getElementById('description')
-    let meals = JSON.parse(localStorage.getItem('calorie-app-meals'))
-    
-    // Get nutrition data and add to local storage
-    await getNutritionData(meal.value)
+    if (meal.value != null) {
+        let meals = JSON.parse(localStorage.getItem('calorie-app-meals'))
+        timestamp = Date.now()
+        
+        // Get nutrition data and add to local storage
+        await getNutritionData(meal.value, timestamp)
 
-    // Add meal entered into local storage
-    if (meals == null || meals.length == 0 || meals.length == undefined)  {
-        localStorage.setItem('calorie-app-meals', JSON.stringify([{id: 1, description: meal.value, calories: 500}]))
-    } else {
-        meals.push({id: meals[-1].id + 1, description: meal.value, calories: 500}) // use timestamp instead of id
-        localStorage.setItem('calorie-app-meals', JSON.stringify(meals))
+        // Add meal entered into local storage
+        if (meals == null || meals.length == 0 || meals.length == undefined)  {
+            localStorage.setItem('calorie-app-meals', JSON.stringify([{id: timestamp, description: meal.value, calories: 500}]))
+        } else {
+            meals.push({id: timestamp, description: meal.value, calories: 500}) // use timestamp instead of id
+            localStorage.setItem('calorie-app-meals', JSON.stringify(meals))
+        }
+
+        meal.value = ""
+        displayMealTable()
     }
-
-    meal.value = ""
-    displayMealTable()
 }
 
 function displayMealTable() {
@@ -108,7 +111,7 @@ function displayMealTable() {
                         </tr>`
     for (i=0; i < data.length; i++) {
         mealData += `<tr>
-            <td>${data[i].id}</td>
+            <td>${data[i].id.toLocaleTimeString()}</td>
             <td>${data[i].description}</td>
             <td>${data[i].calories}</td>
             <td><button class="btn-danger" onclick="deleteItem(data[i].id)">Delete</button></td>
@@ -133,6 +136,7 @@ function displayNutritionTable() {
                             <th scope="col">Fibre</th>
                             <th scope="col">Potassium</th>
                             <th scope="col">Sodium</th>
+                            <th scope="col">Meal ID</th>
                         </tr>`
     
     for (i=0; i < data.length; i++) {
@@ -147,12 +151,14 @@ function displayNutritionTable() {
             <td>${data[i].fiber_g}</td>
             <td>${data[i].potassium_mg}</td>
             <td>${data[i].sodium_mg}</td>
+            <td>${data[i].meal.toLocaleTimeString()}</td>
         </tr>`
     }
 
     nutritionTable.innerHTML = nutritionData
 }
 
-
+// localStorage.clear()
 displayMealTable()
 displayNutritionTable()
+// console.log(JSON.parse(localStorage.getItem('calorie-app-meals')))
